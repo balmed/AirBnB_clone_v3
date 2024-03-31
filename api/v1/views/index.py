@@ -12,24 +12,20 @@ from models.state import State
 from models.user import User
 from models import storage
 
-@app_views.route('/status')
-def status():
-    """ returns status """
-    status = {"status": "OK"}
-    return jsonify(status)
+@app_views.route("/status", strict_slashes=False)
+def view_status():
+    """View function that return a json message"""
+    return jsonify({"status": "OK"})
 
 
-@app_views.route('/stats')
-def count():
-    """ returns number of each objects by type """
-    total = {}
-    classes = {"Amenity": "amenities",
-             /  "City": "cities",
-               "Place": "places",
-               "Review": "reviews",
-               "State": "states",
-               "User": "users"}
-    for cls in classes:
-        count = storage.count(cls)
-        total[classes.get(cls)] = count
-    return jsonify(total)
+@app_views.route("/stats", strict_slashes=False)
+def view_stats():
+    """Veiw function that retrieves the number of each object by type"""
+    return jsonify({
+        "amenities": models.storage.count(Amenity),
+        "cities": models.storage.count(City),
+        "places": models.storage.count(Place),
+        "reviews": models.storage.count(Review),
+        "states": models.storage.count(State),
+        "users": models.storage.count(User)
+    }
